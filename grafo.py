@@ -9,9 +9,13 @@ class grafo:
 		self.cantidad_vertices += 1
 
 	def agregar_arista(self,v_salida,v_llegada,peso):
-		if v_salida in self.vertices and v_llegada in self.vertices:
+		if v_salida in self.vertices :
+			if not v_llegada in self.vertices:
+				self.vertices[v_llegada] = {}
 			self.vertices[v_salida][v_llegada] = peso
 			self.cantidad_aristas +=1
+			return True
+		return False
 	def estan_unidos(self,v1,v2):
 		if v1 in self.vertices and v2 in self.vertices:
 			if v2 in self.vertices[v1]: return True
@@ -35,10 +39,20 @@ class grafo:
 		return False
 	def adyacentes(self,vertice):
 		if vertice in self.vertices:
-			rta = []
-			for v in self.vertices[vertice].keys():
-				rta.append(w)
+			rta = self.vertices[vertice].keys():
 			return rta
 		return None
 	def ver_peso(self,v_salida,v_llegada):
-		
+		if v_salida in self.vertices and v_llegada in self.vertices:
+			return self.vertices[v_salida][v_llegada]
+		return None
+	def existe(self,v):
+		if v in self.vertices:
+			return True
+		return False
+	def obtener_vertice_azar (self):
+		vertices = self.vertices.keys()
+		if len(vertices) > 0 : return vertices[0]
+		return None
+	def vertices (self):
+		return self.vertices.keys()
