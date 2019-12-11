@@ -1,4 +1,4 @@
-class grafo:
+class Grafo:
 	def __init__(self):
 		self.vertices = {}
 		self.cantidad_vertices = 0
@@ -8,7 +8,7 @@ class grafo:
 		self.vertices[vertice] = {}
 		self.cantidad_vertices += 1
 
-	def agregar_arista(self,v_salida,v_llegada,peso):
+	def agregar_arista(self,v_salida,v_llegada,peso = 0):
 		if v_salida in self.vertices :
 			if not v_llegada in self.vertices:
 				self.vertices[v_llegada] = {}
@@ -39,7 +39,9 @@ class grafo:
 		return False
 	def adyacentes(self,vertice):
 		if vertice in self.vertices:
-			rta = self.vertices[vertice].keys():
+			rta = []
+			for v in self.vertices[vertice].keys():
+				rta.append(v)
 			return rta
 		return None
 	def ver_peso(self,v_salida,v_llegada):
@@ -54,5 +56,8 @@ class grafo:
 		vertices = self.vertices.keys()
 		if len(vertices) > 0 : return vertices[0]
 		return None
-	def vertices (self):
-		return self.vertices.keys()
+	def obtener_vertices (self):
+		rta = []
+		for v in self.vertices.keys():
+			rta.append(v)
+		return rta
