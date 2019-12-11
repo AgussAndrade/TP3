@@ -61,3 +61,5 @@ class Grafo:
 		for v in self.vertices.keys():
 			rta.append(v)
 		return rta
+	def __len__(self):
+		return self.cantidad_vertices
