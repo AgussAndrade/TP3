@@ -43,19 +43,22 @@ def orden_topologico(grafo):
 	if (len(resul) == len(grafo)):
 		return resul
 	return None
-def digkstra (grafo,origen):
+def digkstra (grafo,origen,i = None):
 	dist = {}
 	padres = {}
 	for v in grafo.obtener_vertices(): dist[v] = float('inf')
 	dist[origen] = 0
 	padre[origen] = None
 	q = Heap()
-	q.encolar(q,(dist[origen],origen))
+	q.encolar((dist[origen],origen))
 	while !q.esta_vacio():
-		distancia,v = heapq.desencolar(q)
+		distancia,v = q.desencolar()
 		for w in grafo.adyacentes(v):
-			if distancia + grafo.peso(v,w) < dist[w]:
-				dist[w] = dist[v] + grafo.peso(v,w)
+			peso = grafo.ver_peso(v,w)
+			if i != None:
+				peso = peso[i]
+			if distancia + peso < dist[w]:
+				dist[w] = dist[v] + peso
 				padre[w] = v
 				q.encolar((dist[w],w))
 	return padre,dist
@@ -74,20 +77,26 @@ def centralidad(grafo):
 				actual = padre[actual]
 	return cent
 
-def mst_prim(grafo):
+def mst_prim(grafo,parametro_peso = None):
 	vertice = grafo.obtener_vertice_azar()
 	visitados = set()
 	visitados.add(vertice)
 	q = Heap()
 	for w in grafo.adyacentes(vertice):
-		q.encolar(grafo.ver_peso(w),vertice,w)
+		peso = grafo.ver_peso(vertice,w)
+		if parametro_peso:
+			peso = peso[parametro_peso]
+		q.encolar(peso,vertice,w)
 	arbol = Grafo()
 	while not q.esta_vacio():
-		peso,v,w = q.desencolar()
+		p,v,w = q.desencolar()
 		if w in visitados: continue
-		arbol.agregar_arista(v,w,peso)
+		arbol.agregar_arista(v,w,p)
 		visitados.add(w)
 		for x in grafo.adyacentes(w):
 			if x not in visitados:
-				q.encolar(grafo.peso(w,x),w,x)
+				peso = grafo.ver_peso(w,x)
+				if parametro_peso:
+					peso = peso[parametro_peso]
+				q.encolar(peso,w,x)
 	return arbol
