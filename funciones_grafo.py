@@ -74,3 +74,20 @@ def centralidad(grafo):
 				actual = padre[actual]
 	return cent
 
+def mst_prim(grafo):
+	vertice = grafo.obtener_vertice_azar()
+	visitados = set()
+	visitados.add(vertice)
+	q = Heap()
+	for w in grafo.adyacentes(vertice):
+		q.encolar(grafo.ver_peso(w),vertice,w)
+	arbol = Grafo()
+	while not q.esta_vacio():
+		peso,v,w = q.desencolar()
+		if w in visitados: continue
+		arbol.agregar_arista(v,w,peso)
+		visitados.add(w)
+		for x in grafo.adyacentes(w):
+			if x not in visitados:
+				q.encolar(grafo.peso(w,x),w,x)
+	return arbol

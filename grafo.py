@@ -9,13 +9,14 @@ class Grafo:
 		self.cantidad_vertices += 1
 
 	def agregar_arista(self,v_salida,v_llegada,peso = 0):
-		if v_salida in self.vertices :
-			if not v_llegada in self.vertices:
-				self.vertices[v_llegada] = {}
-			self.vertices[v_salida][v_llegada] = peso
-			self.cantidad_aristas +=1
-			return True
-		return False
+		if not v_salida in self.vertices :
+			self.vertices[v_salida] = {}
+			self.cantidad_vertices +=1
+		if not v_llegada in self.vertices:
+			self.vertices[v_llegada] = {}
+			self.cantidad_vertices +=1
+		self.vertices[v_salida][v_llegada] = peso
+		self.cantidad_aristas +=1
 	def estan_unidos(self,v1,v2):
 		if v1 in self.vertices and v2 in self.vertices:
 			if v2 in self.vertices[v1]: return True
