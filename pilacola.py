@@ -76,7 +76,7 @@ class Pila:
 def obtener_padre(posicion):
     return (posicion - 1)//2
 def ob_hijo_i(pos):
-    return 2 pos + 1
+    return 2* pos + 1
 def ob_hijo_d(pos):
     return 2*pos +2
 def swap(arr, i, j):
@@ -122,12 +122,12 @@ def downheap(arr,inicio,act,final):
                 i = hijo_i
                 continue
             return
-        else return
+        else: return
     return
 class Heap:
     def __init__(self):
-        arr = []
-        cantidad = 0
+        self.arr = []
+        self.cantidad = 0
     def cantidad(self):
         return self.cantidad
     def ver_min(self):
@@ -136,13 +136,78 @@ class Heap:
         return self.cantidad == 0
     def desencolar(self):
         if self.esta_vacio(): return None
-        elem = heap.arr[0]
+        elem = self.arr[0]
         swap(self.arr,0,self.cantidad -1)
-        self.arr[self.cantidad - 1] = None
+        self.arr.pop(self.cantidad - 1)
         self.cantidad -=1
         downheap(self.arr,0,0,self.cantidad)
         return elem
     def encolar(self, elem):
-        self.arr[self.cantidad] = elem
+        self.arr.append(elem)
         upheap(self.arr,0,self.cantidad,self.cantidad + 1)
+        self.cantidad +=1
+
+def _upheap(arr,inicio,act,final):
+    if act <= inicio or act >= final: return
+    i = act
+    while i > inicio:
+        padre = obtener_padre(i)
+        if (padre < inicio) : return
+        if(arr[i][0] > arr[padre][0]):
+            swap(arr,i,padre)
+            i = padre
+        else: return
+    return
+
+def _downheap(arr,inicio,act,final):
+    if act < inicio or act >= final or inicio == final: return
+    i = act
+    while(i < final):
+        hijo_d = ob_hijo_d(i)
+        hijo_i = ob_hijo_i(i)
+        if(hijo_d < final and hijo_i < final):
+            aux = 0
+            if(arr[hijo_d][0] > arr[hijo_i][0]):
+                aux = hijo_d
+            else : aux = hijo_i
+            if (arr[aux][0] > arr[i][0]):
+                swap(arr,aux,i)
+                i = aux
+                continue
+            else: return
+        elif (hijo_d < final):
+            if(arr[hijo_d][0] > arr[i][0]):
+                swap(arr,i,hijo_d)
+                i = hijo_d
+                continue
+        elif (hijo_i < final):
+            if(arr[hijo_i][0] > arr[i][0]):
+                swap(arr,i,hijo_i)
+                i = hijo_i
+                continue
+            return
+        else: return
+    return
+
+class HeapMax:
+    def __init__(self):
+        self.arr = []
+        self.cantidad = 0
+    def cantidad(self):
+        return self.cantidad
+    def ver_min(self):
+        return self.arr[0]
+    def esta_vacio(self):
+        return self.cantidad == 0
+    def desencolar(self):
+        if self.esta_vacio(): return None
+        elem = self.arr[0]
+        swap(self.arr,0,self.cantidad -1)
+        self.arr.pop(self.cantidad - 1)
+        self.cantidad -=1
+        _downheap(self.arr,0,0,self.cantidad)
+        return elem
+    def encolar(self, elem):
+        self.arr.append(elem)
+        _upheap(self.arr,0,self.cantidad,self.cantidad + 1)
         self.cantidad +=1

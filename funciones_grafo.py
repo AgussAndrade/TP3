@@ -1,15 +1,14 @@
 from grafo import *
-from pila-cola import *
+from pilacola import *
 # import heapq
 
 
-def bfs (grafo):
-	origen = grafo.obtener_vertice_azar()
+def bfs (grafo,origen):
 	visitados = set()
 	padres = {}
 	orden = {}
 	q = Cola()
-	vistados.add(origen)
+	visitados.add(origen)
 	padres[origen] = None
 	orden[origen] = 0
 	q.encolar(origen)
@@ -46,31 +45,33 @@ def orden_topologico(grafo):
 def digkstra (grafo,origen,i = None):
 	dist = {}
 	padres = {}
-	for v in grafo.obtener_vertices(): dist[v] = float('inf')
+	for v in grafo.obtener_vertices():
+		dist[v] = float('inf')
+		padres[v] = None
+
 	dist[origen] = 0
-	padre[origen] = None
 	q = Heap()
-	q.encolar((dist[origen],origen))
-	while !q.esta_vacio():
+	q.encolar([dist[origen],origen])
+	while not q.esta_vacio():
 		distancia,v = q.desencolar()
 		for w in grafo.adyacentes(v):
 			peso = grafo.ver_peso(v,w)
 			if i != None:
-				peso = peso[i]
+				peso = int(peso[i])
 			if distancia + peso < dist[w]:
 				dist[w] = dist[v] + peso
-				padre[w] = v
-				q.encolar((dist[w],w))
-	return padre,dist
-def centralidad(grafo):
+				padres[w] = v
+				q.encolar([dist[w],w])
+	return padres,dist
+def grafo_centralidad(grafo,formato = None):
 	cent = {}
 	vertices = grafo.obtener_vertices()
 	for v in vertices: cent[v]=0
 	for v in vertices:
 		for w in vertices:
 			if v == w: continue
-			padre,distancia = digkstra(grafo,v)
-			if padre[w] is None: continue
+			padre,distancia = digkstra(grafo,v,formato)
+			if padre[w] == None: continue
 			actual = padre[w]
 			while actual != v:
 				cent[actual] += 1

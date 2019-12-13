@@ -64,3 +64,13 @@ class Grafo:
 		return rta
 	def __len__(self):
 		return self.cantidad_vertices
+	def cent_aprox(self,formato = None):
+		cent = {}
+		for v in self.vertices.keys():
+			cent[v] = 0
+			for w in self.vertices[v].keys():
+				peso = self.ver_peso(v,w)
+				if(formato != None):
+					peso = int(peso[formato])
+				cent[v] += peso
+		return cent
