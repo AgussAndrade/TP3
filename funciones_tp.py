@@ -123,42 +123,44 @@ def centralidad_aprox(vuelos,formato):
 	return
 					# pagerank(aeropuertos,vuelos,ord(comandos_validos[0]))
 					# nueva_aerolinea(aeropuestos,vuelos,comandos_validos[0])
-def _recorrer_mundo(vuelos,desde,actual,rta,valor,visitados,cant_visitados):
-	if cant_visitados == len(vuelos):
+def _vacaciones(vuelos,desde,actual,rta,visitados,cant_visitados,cantidad):
+	if cant_visitados == cantidad:
 		if vuelos.estan_unidos(desde,actual): return True
 		else: return False
-	for v in vuelos.adyacentes(actual):
+	ady = vuelos.adyacentes(actual)
+
+	for v in ady:
 		if v not in visitados:
 			rta.append(v)
 			visitados.add(v)
 			cant_visitados+=1
-			valor[0]+= int(vuelos.ver_peso(actual,v)[0])
-			if(_recorrer_mundo(vuelos,desde,v,rta,valor,visitados,cant_visitados)):
+			if(_vacaciones(vuelos,desde,v,rta,visitados,cant_visitados,cantidad)):
 				return True
 			rta.pop()
 			visitados.remove(v)
 			cant_visitados-=1
-			valor[0]-=int(vuelos.ver_peso(actual,v)[0])
 	return False
-def recorrer_mundo(aeropuertos,vuelos,desde):
+def vacaciones(aeropuertos,vuelos,desde,cantidad):
+	if not desde in aeropuertos:
+		print(ERROR_VACACIONES)
 	rta = []
-	valor = [0]
 	visitados = set()
 	cant_visitados = 0
 	for codigos in aeropuertos[desde]:
+
 		codigo = codigos[1]
 		rta.append(codigo)
 		visitados.add(codigo)
 		cant_visitados+=1
-		if (_recorrer_mundo(vuelos,codigo,codigo,rta,valor,visitados,cant_visitados)):
-			for i in range(len(rta)):
+		if (_vacaciones(vuelos,codigo,codigo,rta,visitados,cant_visitados,cantidad)):
+			largo_rta = len(rta)
+			for i in range(largo_rta):
 				print(f'{rta[i]} -> ',end = '')
 			print(rta[0])
-			print(valor[0])
 			return
 		else:
 			rta.pop()
-			visitados.remove(codigos)
+			visitados.remove(codigo)
 			cant_visitados-=1
 	print(ERROR_RECORRER_MUNDO)
 	return

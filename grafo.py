@@ -40,10 +40,7 @@ class Grafo:
 		return False
 	def adyacentes(self,vertice):
 		if vertice in self.vertices:
-			rta = []
-			for v in self.vertices[vertice].keys():
-				rta.append(v)
-			return rta
+			return self.vertices[vertice].keys()
 		return None
 	def ver_peso(self,v_salida,v_llegada):
 		if v_salida in self.vertices and v_llegada in self.vertices:

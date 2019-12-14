@@ -1,0 +1,6 @@
+camino_mas rapido,Gotica,Lanus
+camino_mas barato,Gotica,Lanus
+camino_mas rapido,Riverdale,Gotica
+centralidad 5
+vacaciones Lanus,5
+vacaciones Pueblo Paleta,7

@@ -147,67 +147,86 @@ class Heap:
         upheap(self.arr,0,self.cantidad,self.cantidad + 1)
         self.cantidad +=1
 
-def _upheap(arr,inicio,act,final):
-    if act <= inicio or act >= final: return
-    i = act
-    while i > inicio:
-        padre = obtener_padre(i)
-        if (padre < inicio) : return
-        if(arr[i][0] > arr[padre][0]):
-            swap(arr,i,padre)
-            i = padre
-        else: return
-    return
+# def _upheap(arr,inicio,act,final):
+#     if act <= inicio or act >= final: return
+#     i = act
+#     while i > inicio:
+#         padre = obtener_padre(i)
+#         if (padre < inicio) : return
+#         if(arr[i][0] > arr[padre][0]):
+#             swap(arr,i,padre)
+#             i = padre
+#         else: return
+#     return
 
-def _downheap(arr,inicio,act,final):
-    if act < inicio or act >= final or inicio == final: return
-    i = act
-    while(i < final):
-        hijo_d = ob_hijo_d(i)
-        hijo_i = ob_hijo_i(i)
-        if(hijo_d < final and hijo_i < final):
-            aux = 0
-            if(arr[hijo_d][0] > arr[hijo_i][0]):
-                aux = hijo_d
-            else : aux = hijo_i
-            if (arr[aux][0] > arr[i][0]):
-                swap(arr,aux,i)
-                i = aux
-                continue
-            else: return
-        elif (hijo_d < final):
-            if(arr[hijo_d][0] > arr[i][0]):
-                swap(arr,i,hijo_d)
-                i = hijo_d
-                continue
-        elif (hijo_i < final):
-            if(arr[hijo_i][0] > arr[i][0]):
-                swap(arr,i,hijo_i)
-                i = hijo_i
-                continue
-            return
-        else: return
-    return
+# def _downheap(arr,inicio,act,final):
+#     if act < inicio or act >= final or inicio == final: return
+#     i = act
+#     while(i < final):
+#         hijo_d = ob_hijo_d(i)
+#         hijo_i = ob_hijo_i(i)
+#         if(hijo_d < final and hijo_i < final):
+#             aux = 0
+#             if(arr[hijo_d][0] > arr[hijo_i][0]):
+#                 aux = hijo_d
+#             else : aux = hijo_i
+#             if (arr[aux][0] > arr[i][0]):
+#                 swap(arr,aux,i)
+#                 i = aux
+#                 continue
+#             else: return
+#         elif (hijo_d < final):
+#             if(arr[hijo_d][0] > arr[i][0]):
+#                 swap(arr,i,hijo_d)
+#                 i = hijo_d
+#                 continue
+#         elif (hijo_i < final):
+#             if(arr[hijo_i][0] > arr[i][0]):
+#                 swap(arr,i,hijo_i)
+#                 i = hijo_i
+#                 continue
+#             return
+#         else: return
+#     return
 
-class HeapMax:
-    def __init__(self):
-        self.arr = []
-        self.cantidad = 0
-    def cantidad(self):
-        return self.cantidad
-    def ver_min(self):
-        return self.arr[0]
-    def esta_vacio(self):
-        return self.cantidad == 0
-    def desencolar(self):
-        if self.esta_vacio(): return None
-        elem = self.arr[0]
-        swap(self.arr,0,self.cantidad -1)
-        self.arr.pop(self.cantidad - 1)
-        self.cantidad -=1
-        _downheap(self.arr,0,0,self.cantidad)
-        return elem
-    def encolar(self, elem):
-        self.arr.append(elem)
-        _upheap(self.arr,0,self.cantidad,self.cantidad + 1)
-        self.cantidad +=1
+# class HeapMax:
+#     def __init__(self):
+#         self.arr = []
+#         self.cantidad = 0
+#     def cantidad(self):
+#         return self.cantidad
+#     def ver_min(self):
+#         return self.arr[0]
+#     def esta_vacio(self):
+#         return self.cantidad == 0
+#     def desencolar(self):
+#         if self.esta_vacio(): return None
+#         elem = self.arr[0]
+#         swap(self.arr,0,self.cantidad -1)
+#         self.arr.pop(self.cantidad - 1)
+#         self.cantidad -=1
+#         _downheap(self.arr,0,0,self.cantidad)
+#         return elem
+#     def encolar(self, elem):
+#         self.arr.append(elem)
+#         _upheap(self.arr,0,self.cantidad,self.cantidad + 1)
+#         self.cantidad +=1
+
+def quicksort(lista):
+    if len(lista) < 2:
+        return lista
+    izquierda,medio,derecha = partir(lista,len(lista) -1)
+    return quicksort(izquierda) + [medio] + quicksort(derecha)
+def partir(lista, fin):
+    pivote = lista[0]
+    izquierda = []
+    derecha = []
+    i = 1
+    while i <= fin:
+        if lista[i][1] < pivote[1]:
+            izquierda.append(lista[i])
+            i += 1
+        else:
+            derecha.append(lista[i])
+            i += 1
+    return izquierda,pivote,derecha
