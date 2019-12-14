@@ -63,6 +63,30 @@ def digkstra (grafo,origen,i = None):
 				padres[w] = v
 				q.encolar([dist[w],w])
 	return padres,dist
+
+def camino_minimo(grafo,origen,destino,i = None):
+	dist = {}
+	padres = {}
+	for v in grafo.obtener_vertices():
+		dist[v] = float('inf')
+		padres[v] = None
+
+	dist[origen] = 0
+	q = Heap()
+	q.encolar([dist[origen],origen])
+	while not q.esta_vacio():
+		distancia,v = q.desencolar()
+		if destino == v:
+			for w in grafo.adyacentes(v):
+				peso = grafo.ver_peso(v,w)
+				if i != None:
+					peso = int(peso[i])
+				if distancia + peso < dist[w]:
+					dist[w] = dist[v] + peso
+					padres[w] = v
+					q.encolar([dist[w],w])
+	return padres,dist
+
 def grafo_centralidad(grafo,formato = None):
 	cent = {}
 	vertices = grafo.obtener_vertices()
@@ -70,7 +94,7 @@ def grafo_centralidad(grafo,formato = None):
 	for v in vertices:
 		for w in vertices:
 			if v == w: continue
-			padre,distancia = digkstra(grafo,v,formato)
+			padre,distancia = camino_minimo(grafo,v,w,formato)
 			if padre[w] == None: continue
 			actual = padre[w]
 			while actual != v:
