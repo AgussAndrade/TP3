@@ -14,6 +14,8 @@ ERROR_NUEVA_AEROLINEA = 'ERROR_NUEVA_AEROLINEA'
 ERROR_RECORRER_MUNDO = 'ERROR_RECORRER_MUNDO'
 ERROR_RECORRER_MUNDO_APROX = 'ERROR_RECORRER_MUNDO_APROX'
 ERROR_PAGERANK = 'ERROR_PAGERANK'
+ERROR_CAMINO_ESCALAS = 'ERROR_CAMINO_ESCALAS'
+
 NO_PERTENECE_OPERACIONES = 'NO_PERTENECE_OPERACIONES'
 def camino_mas(formato,aeropuertos,vuelos,desde,hasta):
 	if not desde in aeropuertos or not hasta in aeropuertos:
@@ -27,7 +29,7 @@ def camino_mas(formato,aeropuertos,vuelos,desde,hasta):
 	for datos_hasta in aeropuertos[hasta]:
 		codigos_validos.append(datos_hasta[1])
 	for listas in aeropuertos[desde]:
-		padres_aux,dist_aux = digkstra(vuelos,listas[1],formato)
+		padres_aux,dist_aux = camino_minimo(vuelos,listas[1],formato)
 		for aeropuerto_hasta in codigos_validos:
 			if dist_aux[aeropuerto_hasta] < menor:
 				menor = dist_aux[aeropuerto_hasta]

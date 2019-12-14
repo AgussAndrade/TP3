@@ -42,8 +42,9 @@ def orden_topologico(grafo):
 	if (len(resul) == len(grafo)):
 		return resul
 	return None
-def digkstra (grafo,origen,i = None):
+def camino_minimo(grafo,origen,i = None,destino = None):
 	dist = {}
+	rta = True
 	padres = {}
 	for v in grafo.obtener_vertices():
 		dist[v] = float('inf')
@@ -54,29 +55,8 @@ def digkstra (grafo,origen,i = None):
 	q.encolar([dist[origen],origen])
 	while not q.esta_vacio():
 		distancia,v = q.desencolar()
-		for w in grafo.adyacentes(v):
-			peso = grafo.ver_peso(v,w)
-			if i != None:
-				peso = int(peso[i])
-			if distancia + peso < dist[w]:
-				dist[w] = dist[v] + peso
-				padres[w] = v
-				q.encolar([dist[w],w])
-	return padres,dist
-
-def camino_minimo(grafo,origen,destino,i = None):
-	dist = {}
-	padres = {}
-	for v in grafo.obtener_vertices():
-		dist[v] = float('inf')
-		padres[v] = None
-
-	dist[origen] = 0
-	q = Heap()
-	q.encolar([dist[origen],origen])
-	while not q.esta_vacio():
-		distancia,v = q.desencolar()
-		if destino == v:
+		if destino != None: rta = destino == v
+		if rta:
 			for w in grafo.adyacentes(v):
 				peso = grafo.ver_peso(v,w)
 				if i != None:
@@ -94,7 +74,7 @@ def grafo_centralidad(grafo,formato = None):
 	for v in vertices:
 		for w in vertices:
 			if v == w: continue
-			padre,distancia = camino_minimo(grafo,v,w,formato)
+			padre,distancia = camino_minimo(grafo,v,formato,w)
 			if padre[w] == None: continue
 			actual = padre[w]
 			while actual != v:
