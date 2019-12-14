@@ -78,15 +78,15 @@ def grafo_centralidad(grafo,formato = None):
 				actual = padre[actual]
 	return cent
 
-def mst_prim(grafo,parametro_peso = None):
-	vertice = grafo.obtener_vertice_azar()
+def mst_prim(grafo,vertice = None,parametro_peso = None):
+	if vertice == None: vertice = grafo.obtener_vertice_azar()
 	visitados = set()
 	visitados.add(vertice)
 	q = Heap()
 	for w in grafo.adyacentes(vertice):
 		peso = grafo.ver_peso(vertice,w)
 		if parametro_peso:
-			peso = peso[parametro_peso]
+			peso = int(peso[parametro_peso])
 		q.encolar(peso,vertice,w)
 	arbol = Grafo()
 	while not q.esta_vacio():
@@ -98,6 +98,16 @@ def mst_prim(grafo,parametro_peso = None):
 			if x not in visitados:
 				peso = grafo.ver_peso(w,x)
 				if parametro_peso:
-					peso = peso[parametro_peso]
+					peso = int(peso[parametro_peso])
 				q.encolar(peso,w,x)
 	return arbol
+
+def vertice_aleatorio(pesos):
+    #Pesos es un diccionario de pesos, clave vértice vecino, valor el peso.
+    total = sum(pesos.values())
+    rand = random.uniform(0, total)
+    acum = 0
+    for vertice, peso_arista in pesos.items():
+        if acum + peso_arista >= rand:
+            return vertice
+        acum += peso_arista

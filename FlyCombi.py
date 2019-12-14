@@ -116,12 +116,12 @@ def envolver_comandos(aeropuertos,vuelos):
 		# 	else:
 		# 		print(ERROR_NUEVA_AEROLINEA)
 		# 	continue
-		# if valor == 6:
-		# 	if(largo == 1):
-		# 		recorrer_mundo(aeropuertos,vuelos,comandos_validos[0])
-		# 	else:
-		# 		print(ERROR_RECORRER_MUNDO)
-		# 	continue
+		if valor == 6:
+			if(largo == 1):
+				recorrer_mundo(aeropuertos,vuelos,comandos_validos[0])
+			else:
+				print(ERROR_RECORRER_MUNDO)
+
 
 		# if valor == 7:
 		# 	if(largo == 1):
