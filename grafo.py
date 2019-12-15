@@ -24,7 +24,7 @@ class Grafo:
 	def sacar_arista(self,v_salida,v_llegada):
 		if v_salida in self.vertices and v_llegada in self.vertices:
 			if v_llegada in self.vertices[v_salida]:
-				self.vertices[v_salida].pop(v_llegada)
+				self.vertices[v_salida].remove(v_llegada)
 				self.cantidad_aristas -=1
 				return True
 		return False
@@ -32,9 +32,9 @@ class Grafo:
 		if v in self.vertices:
 			for key in self.vertices.keys():
 				if v in key:
-					key.pop(v)
+					key.remove(v)
 					self.cantidad_aristas -=1
-			self.vertices.pop(v)
+			self.vertices.remove(v)
 			self.cantidad_vertices -=1
 			return True
 		return False
@@ -53,10 +53,7 @@ class Grafo:
 	def obtener_vertice_azar (self):
 		for vertice in self.vertices.keys(): return vertice
 	def obtener_vertices (self):
-		rta = []
-		for v in self.vertices.keys():
-			rta.append(v)
-		return rta
+		return self.vertices.keys()
 	def __len__(self):
 		return self.cantidad_vertices
 	def cent_aprox(self,formato = None):
@@ -69,3 +66,11 @@ class Grafo:
 					peso = int(peso[formato])
 				cent[w] += peso
 		return cent
+	def suma_total_pesos(self,indice = None):
+		costo = 0
+		for v in self.vertices.keys():
+			for peso in self.vertices[v].values():
+				if indice != None:
+					costo+= int(peso[indice])
+				else: costo+= int(peso)
+		return costo

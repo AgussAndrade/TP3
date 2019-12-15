@@ -8,7 +8,7 @@ from funciones_tp import *
 PARAMETROS_COMANDOS = sys.stdin
 PARAMETROS = sys.argv[1:]
 LARGO_PARAMETROS = len(PARAMETROS)
-OPERACIONES = {'listar_operaciones': -1,'camino_mas' : 0,'camino_escalas' : 1,'centralidad' : 2,'centralidad_aprox' : 3,'pagerank' : 4,'nueva_aerolinea' : 5,'recorrer_mundo' : 6,'recorrer_mundo_aprox' : 7,'vacaciones' : 8, 'itinerario' : 9, 'exportar_kml' : 10}
+OPERACIONES = {'camino_mas' : 0,'camino_escalas' : 1,'centralidad' : 2,'centralidad_aprox' : 3,'pagerank' : 4,'nueva_aerolinea' : 5,'recorrer_mundo' : 6,'recorrer_mundo_aprox' : 7,'vacaciones' : 8, 'itinerario' : 9, 'exportar_kml' : 10}
 ER_CARPETA = 'ER_CARPETA'
 ERROR_CENTRALIDAD_APROX = 'ERROR_CENTRALIDAD_APROX'
 ERROR_VACACIONES = 'ERROR_VACACIONES'
@@ -63,6 +63,11 @@ def envolver_comandos(aeropuertos,vuelos):
 
 	for linea in sys.stdin:
 		comando = linea.rstrip('\n').split(' ')
+		
+		if comando[0] == "listar_operaciones":
+			for key in OPERACIONES.keys():
+				print(f'{key}')
+			continue
 
 		if(not comando[0] in OPERACIONES): 
 			print(NO_PERTENECE_OPERACIONES)
@@ -71,11 +76,6 @@ def envolver_comandos(aeropuertos,vuelos):
 			continue
 
 		valor = OPERACIONES[comando[0]]
-
-		if valor == -1:
-			for key in OPERACIONES.keys():
-				print(f'{key}')
-			continue
 
 		comandos_validos = (' '.join(comando[1:])).split(',') # es un asco hacer esto pero es lo mas valido que se me ocurre
 		largo = len(comandos_validos)
@@ -87,38 +87,42 @@ def envolver_comandos(aeropuertos,vuelos):
 				camino_mas(1,aeropuertos,vuelos,comandos_validos[1],comandos_validos[2])
 			else:
 				print(ERROR_CAMINO_MAS)
+			continue
 		elif valor == 1:
 			if(largo == 2):
 				camino_escalas(aeropuertos,vuelos,comandos_validos[0],comandos_validos[1])
 			else:
 				print(ERROR_CAMINO_ESCALAS)
+			continue
 		elif valor == 2:
 			if(largo == 1 and comandos_validos[0].isdigit()):
 				centralidad(vuelos,int(comandos_validos[0]))
 			else:
 				print(ERROR_CENTRALIDAD)
+			continue
 		elif valor == 3:
 			if(largo == 1 and comandos_validos[0].isdigit()):
 				centralidad_aprox(vuelos,int(comandos_validos[0]))
 			else:
 				print(ERROR_CENTRALIDAD_APROX)
-		# if valor == 4:
-		# 	if(largo == 1 and comandos_validos[0].isdigit()):
-		# 		pagerank(aeropuertos,vuelos,int(comandos_validos[0]))
-		# 	else:
-		# 		print(ERROR_PAGERANK)
-		# 	continue
-		# if valor == 5:
-		# 	if(largo == 1 and find(".csv",comandos_validos[0]) != -1):
-		# 		nueva_aerolinea(aeropuestos,vuelos,comandos_validos[0])
-		# 	else:
-		# 		print(ERROR_NUEVA_AEROLINEA)
-		# 	continue
-		# if valor == 6:
-		# 	if(largo == 1):
-		# 		recorrer_mundo(aeropuertos,vuelos,comandos_validos[0])
-		# 	else:
-		# 		print(ERROR_RECORRER_MUNDO)
+			continue
+		if valor == 4:
+			if(largo == 1 and comandos_validos[0].isdigit()):
+				pagerank(vuelos,int(comandos_validos[0]),10)
+			else:
+				print(ERROR_PAGERANK)
+			continue
+		if valor == 5:
+			if(largo == 1 and find(".csv",comandos_validos[0]) != -1):
+				nueva_aerolinea(aeropuestos,vuelos,comandos_validos[0])
+			else:
+				print(ERROR_NUEVA_AEROLINEA)
+			continue
+		if valor == 6:
+			if(largo == 1):
+				recorrer_mundo(aeropuertos,vuelos,comandos_validos[0])
+			else:
+				print(ERROR_RECORRER_MUNDO)
 
 
 		# if valor == 7:

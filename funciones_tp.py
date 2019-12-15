@@ -121,8 +121,50 @@ def centralidad_aprox(vuelos,formato):
 			print(',', end = '')
 	print()
 	return
-					# pagerank(aeropuertos,vuelos,ord(comandos_validos[0]))
-					# nueva_aerolinea(aeropuestos,vuelos,comandos_validos[0])
+def pagerank(grafo,cantidad,iteraciones):
+	pagerank = {}
+	links = {}
+	cant_vertices = 0
+	contador = 0
+	rank = Heap()
+	vertices = grafo.obtener_vertices()
+	for v in vertices:
+		cant_vertices += 1
+		pagerank[v] = 0
+		for w in grafo.adyacentes(v):
+			if not v in links:
+				links[v] = 0
+			links[v] += 1
+	for _ in range(iteraciones):
+		for vert in vertices:
+			for w in grafo.adyacentes(vert):
+				pagerank_suma = 0
+				pagerank_suma += (pagerank[w]/links[w])
+			pagerank[vert] += ((1-0.85)/cant_vertices) + (0.85 * pagerank_suma)
+	for k,v in pagerank.items():
+		if(contador < cantidad):
+			rank.encolar((v,k))
+			contador +=1
+			continue
+		if v > rank.ver_min()[0]:
+			rank.desencolar()
+			rank.encolar((v,k))
+	pila = Pila()
+	while not rank.esta_vacio():
+		pila.apilar(rank.desencolar()[1])
+	while not pila.esta_vacia():
+		print(pila.desapilar(), end = '')
+		if not pila.esta_vacia():
+			print(',', end = '')
+	print()
+	return
+def nueva_aerolinea(aeropuertos,vuelos,archivo_a_escribir):
+	try:
+		with open(archivo_a_escribir,'w',encoding = 'utf8') as archivo:
+			arbol_a_escribir = mst_prim(vuelos,0)
+
+	except FileNotFoundError:
+		print(ERROR_NUEVA_AEROLINEA)
 def _vacaciones(vuelos,desde,actual,rta,visitados,cant_visitados,cantidad):
 	if cant_visitados == cantidad:
 		if vuelos.estan_unidos(desde,actual): return True
@@ -165,4 +207,46 @@ def vacaciones(aeropuertos,vuelos,desde,cantidad):
 	print(ERROR_RECORRER_MUNDO)
 	return
 					# recorrer_mundo_aprox(aeropuertos,vuelos,comandos_validos[0])
-					# vacaciones(aeropuertos,vuelos,comandos_validos[0],ord(comandos_validos[1]))
+# def _recorrer_mundo(vuelos,desde,actual,rta,valor,visitados,cant_visitados):
+# 	if cant_visitados == len(vuelos):
+# 		return True
+# 	ady = vuelos.adyacentes(actual)
+# 	tiempo_min = []
+# 	for v in ady:
+# 		tiempo_min.append((v,int(vuelos.ver_peso(actual,v)[0])))
+# 	tiempo_ordenado = quicksort(tiempo_min)
+# 	for tupla in tiempo_ordenado:
+# 		v = tupla[0]
+# 		pertenece = v not in visitados
+# 		if v != desde:
+# 			print(v)
+# 			rta.append(v)
+# 			if pertenece:
+# 				visitados.add(v)
+# 				cant_visitados+=1
+# 			valor[0]+= int(vuelos.ver_peso(actual,v)[0])
+# 			if(_recorrer_mundo(vuelos,actual,v,rta,valor,visitados,cant_visitados)):
+# 				return True
+# 			vuelos.sacar_vertice(v)
+# 	return False
+def recorrer_mundo(aeropuertos,vuelos,desde):
+	if not desde in aeropuertos:
+		print(ERROR_RECORRER_MUNDO)
+	recorrido = None
+	costo = float('inf')
+	padre = {}
+	dist = dist
+	for codigos in aeropuertos[desde]:
+		recorrido_aux = mst_prim(vuelos,codigos[1],0)
+		padre_aux,dist_aux = bfs(recorrido,codigos[1])
+		costo_aux = recorrido.suma_total_pesos()
+		if costo > costo_aux:
+			costo = costo_aux
+			recorrido = recorrido_aux
+			padre= padre_aux
+			dist = dist_aux
+
+
+
+
+

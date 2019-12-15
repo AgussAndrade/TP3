@@ -91,19 +91,20 @@ def mst_prim(grafo,vertice = None,parametro_peso = None):
 		peso = grafo.ver_peso(vertice,w)
 		if parametro_peso:
 			peso = int(peso[parametro_peso])
-		q.encolar(peso,vertice,w)
+		q.encolar((peso,vertice,w))
 	arbol = Grafo()
 	while not q.esta_vacio():
 		p,v,w = q.desencolar()
 		if w in visitados: continue
 		arbol.agregar_arista(v,w,p)
+		arbol.agregar_arista(w,v,p)
 		visitados.add(w)
 		for x in grafo.adyacentes(w):
 			if x not in visitados:
 				peso = grafo.ver_peso(w,x)
 				if parametro_peso:
 					peso = int(peso[parametro_peso])
-				q.encolar(peso,w,x)
+				q.encolar((peso,w,x))
 	return arbol
 
 def vertice_aleatorio(pesos):
