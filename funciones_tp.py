@@ -121,6 +121,7 @@ def centralidad_aprox(vuelos,formato):
 			print(',', end = '')
 	print()
 	return
+
 def pagerank(grafo,cantidad,iteraciones):
 	pagerank = {}
 	links = {}
@@ -131,16 +132,15 @@ def pagerank(grafo,cantidad,iteraciones):
 	for v in vertices:
 		cant_vertices += 1
 		pagerank[v] = 0
+		links[v] = 0
 		for w in grafo.adyacentes(v):
-			if not v in links:
-				links[v] = 0
 			links[v] += 1
-	for _ in range(iteraciones):
+	for i in range(iteraciones):
 		for vert in vertices:
+			pagerank_suma = 0
 			for w in grafo.adyacentes(vert):
-				pagerank_suma = 0
 				pagerank_suma += (pagerank[w]/links[w])
-			pagerank[vert] += ((1-0.85)/cant_vertices) + (0.85 * pagerank_suma)
+			pagerank[vert] += (((1-0.85)/cant_vertices) + (0.85 * pagerank_suma))
 	for k,v in pagerank.items():
 		if(contador < cantidad):
 			rank.encolar((v,k))
@@ -155,9 +155,10 @@ def pagerank(grafo,cantidad,iteraciones):
 	while not pila.esta_vacia():
 		print(pila.desapilar(), end = '')
 		if not pila.esta_vacia():
-			print(',', end = '')
+			print(', ', end = '')
 	print()
 	return
+
 def nueva_aerolinea(aeropuertos,vuelos,archivo_a_escribir):
 	try:
 		with open(archivo_a_escribir,'w',encoding = 'utf8') as archivo:
