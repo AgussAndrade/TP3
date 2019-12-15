@@ -72,5 +72,6 @@ class Grafo:
 			for peso in self.vertices[v].values():
 				if indice != None:
 					costo+= int(peso[indice])
-				else: costo+= int(peso)
+				elif peso is str: costo+= int(peso)
+				else: costo+= peso
 		return costo

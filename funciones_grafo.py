@@ -24,20 +24,20 @@ def bfs (grafo,origen):
 def orden_topologico(grafo):
 	grados = {}
 	vertices = grafo.obtener_vertices()
-	for v in vertices: grado[v] = 0
+	for v in vertices: grados[v] = 0
 	for v in vertices:
 		for w in grafo.adyacentes(v):
-			grado[w] += 1
+			grados[w] += 1
 	q = Cola()
 	for v in vertices:
-		if grado[v] == 0 : q.encolar(v)
+		if grados[v] == 0 : q.encolar(v)
 	resul = []
 	while not q.esta_vacia():
 		v = q.desencolar()
 		resul.append(v)
 		for w in grafo.adyacentes(v):
-			grado[w] -=1
-			if grado[w] == 0:
+			grados[w] -=1
+			if grados[w] == 0:
 				q.encolar(w)
 	if (len(resul) == len(grafo)):
 		return resul
@@ -97,7 +97,7 @@ def mst_prim(grafo,vertice = None,parametro_peso = None):
 		p,v,w = q.desencolar()
 		if w in visitados: continue
 		arbol.agregar_arista(v,w,p)
-		arbol.agregar_arista(w,v,p)
+
 		visitados.add(w)
 		for x in grafo.adyacentes(w):
 			if x not in visitados:

@@ -88,49 +88,50 @@ def envolver_comandos(aeropuertos,vuelos):
 			else:
 				print(ERROR_CAMINO_MAS)
 			continue
+# pregunto si es mayor o igual el rango porque capaz escribe <comando> \n o <comando>\n y eso con el split me hace un arreglo vacio
 		elif valor == 1:
-			if(largo == 2):
+			if(largo >= 2):
 				camino_escalas(aeropuertos,vuelos,comandos_validos[0],comandos_validos[1])
 			else:
 				print(ERROR_CAMINO_ESCALAS)
 			continue
 		elif valor == 2:
-			if(largo == 1 and comandos_validos[0].isdigit()):
+			if(largo >= 1 and comandos_validos[0].isdigit()):
 				centralidad(vuelos,int(comandos_validos[0]))
 			else:
 				print(ERROR_CENTRALIDAD)
 			continue
 		elif valor == 3:
-			if(largo == 1 and comandos_validos[0].isdigit()):
+			if(largo >= 1 and comandos_validos[0].isdigit()):
 				centralidad_aprox(vuelos,int(comandos_validos[0]))
 			else:
 				print(ERROR_CENTRALIDAD_APROX)
 			continue
 		if valor == 4:
-			if(largo == 1 and comandos_validos[0].isdigit()):
-				pagerank(vuelos,int(comandos_validos[0]),10)
+			if(largo >= 1 and comandos_validos[0].isdigit()):
+				pagerank(vuelos,int(comandos_validos[0]),5)
 			else:
 				print(ERROR_PAGERANK)
 			continue
 		if valor == 5:
-			if(largo == 1 and find(".csv",comandos_validos[0]) != -1):
-				nueva_aerolinea(aeropuestos,vuelos,comandos_validos[0])
+			if(largo >= 1 and comandos_validos[0].find(".csv") != -1):
+				nueva_aerolinea(aeropuertos,vuelos,comandos_validos[0])
 			else:
 				print(ERROR_NUEVA_AEROLINEA)
 			continue
 		if valor == 6:
-			if(largo == 1):
+			if(largo >= 1):
 				recorrer_mundo(aeropuertos,vuelos,comandos_validos[0])
 			else:
 				print(ERROR_RECORRER_MUNDO)
 
 
-		# if valor == 7:
-		# 	if(largo == 1):
-		# 		recorrer_mundo_aprox(aeropuertos,vuelos,comandos_validos[0])
-		# 	else:
-		# 		print(ERROR_RECORRER_MUNDO_APROX)
-		# 	continue
+		if valor == 7:
+			if(largo == 1):
+				recorrer_mundo_aprox(aeropuertos,vuelos,comandos_validos[0])
+			else:
+				print(ERROR_RECORRER_MUNDO_APROX)
+			continue
 
 		if valor == 8:
 			if(largo == 2 and comandos_validos[1].isdigit()):
