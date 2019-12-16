@@ -28,6 +28,10 @@ class Grafo:
 				self.cantidad_aristas -=1
 				return True
 		return False
+	
+	def obtener_arista(self,v_salida,v_llegada):
+		return self.vertices[v_salida][v_llegada]
+	
 	def sacar_vertice(self,v):
 		if v in self.vertices:
 			for key in self.vertices.keys():
