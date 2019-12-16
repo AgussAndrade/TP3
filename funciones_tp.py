@@ -84,6 +84,7 @@ def centralidad(vuelos,formato):
 	minimos = Heap()
 	contador = 0
 	for codigo,tam in cent.items():
+		print(f'codigo: {codigo} -- tam: {tam}')
 		if(contador < formato):
 			minimos.encolar((tam,codigo))
 			contador +=1

@@ -44,7 +44,6 @@ def orden_topologico(grafo):
 	return None
 def camino_minimo(grafo,origen,i = None,destino = None):
 	dist = {}
-	rta = True
 	padres = {}
 	for v in grafo.obtener_vertices():
 		dist[v] = float('inf')
@@ -55,32 +54,58 @@ def camino_minimo(grafo,origen,i = None,destino = None):
 	q.encolar([dist[origen],origen])
 	while not q.esta_vacio():
 		distancia,v = q.desencolar()
-		if destino != None: rta = destino == v
-		if rta:
-			for w in grafo.adyacentes(v):
-				peso = grafo.ver_peso(v,w)
-				if i != None:
-					peso = int(peso[i])
-				if distancia + peso < dist[w]:
-					dist[w] = dist[v] + peso
-					padres[w] = v
-					q.encolar([dist[w],w])
+		if destino is not None: 
+			if destino == v:
+				return padres,dist
+		for w in grafo.adyacentes(v):
+			peso = grafo.ver_peso(v,w)
+			if i != None:
+				peso = int(peso[i])
+			else: peso = 1
+			if distancia + peso < dist[w]:
+				dist[w] = distancia + peso
+				padres[w] = v
+				q.encolar([dist[w],w])
 	return padres,dist
-
+def ordenar_vertices(grafo,distancia):
+	vertices = grafo.obtener_vertices()
+	rta = []
+	for v in vertices:
+		if distancia[v] != float('inf') and distancia[v] != 0:
+				rta.append((v,distancia[v]))
+	return quicksort(rta)
 def grafo_centralidad(grafo,formato = None):
 	cent = {}
 	vertices = grafo.obtener_vertices()
 	for v in vertices: cent[v]=0
 	for v in vertices:
+		padre,distancia = camino_minimo(grafo,v,formato)
+		cent_aux = {}
+		for w in vertices: cent_aux[w] = 0
+		
+		vertices_ordenados = ordenar_vertices(grafo,distancia)
+		print(f'todo = {vertices_ordenados}')
+		for w,d in vertices_ordenados:
+			cent_aux[padre[w]] += 1 + cent_aux[w]
 		for w in vertices:
-			if v == w: continue
-			padre,distancia = camino_minimo(grafo,v,formato,w)
-			if padre[w] == None: continue
-			actual = padre[w]
-			while actual != v:
-				cent[actual] += 1
-				actual = padre[actual]
+			if w == v: continue
+			cent[w] += cent_aux[w]
 	return cent
+# def grafo_centralidad(grafo,formato = None):
+# 	cent = {}
+# 	vertices = grafo.obtener_vertices()
+# 	for v in vertices: cent[v]=0
+# 	for v in vertices:
+# 		for w in vertices:
+# 			if v == w: continue
+# 			padre,distancia = camino_minimo(grafo,v,formato,w)
+# 			# print(f'distancias {distancia.items()}')
+# 			if padre[w] == None: continue
+# 			actual = padre[w]
+# 			while actual != v:
+# 				cent[actual] += 1
+# 				actual = padre[actual]
+# 	return cent
 
 def mst_prim(grafo,vertice = None,parametro_peso = None):
 	if vertice == None: vertice = grafo.obtener_vertice_azar()
