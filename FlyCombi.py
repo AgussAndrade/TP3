@@ -103,7 +103,7 @@ def envolver_comandos(aeropuertos,vuelos):
 			continue
 		elif valor == 3:
 			if(largo >= 1 and comandos_validos[0].isdigit()):
-				centralidad_aprox(vuelos,int(comandos_validos[0]))
+				centralidad_aprox(vuelos,int(comandos_validos[0]),300,10)
 			else:
 				print(ERROR_CENTRALIDAD_APROX)
 			continue
