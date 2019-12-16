@@ -100,27 +100,45 @@ def centralidad(vuelos,formato):
 			print(',', end = '')
 	print()
 	return
-def centralidad_aprox(vuelos,formato):
-	cent = vuelos.cent_aprox(2)
-	minimos = Heap()
-	cantidad = 0
-	for codigo,tam in cent.items():
-		if(cantidad < formato):
-			minimos.encolar((tam,codigo))
-			cantidad +=1
+
+def centralidad_aprox(grafo,formato,largo,recorridos):
+	heap = Heap()
+	apariciones = {}
+	adyacentes = {}
+	vertices = []
+	contador = 0
+	for v in grafo.obtener_vertices():
+		vertices.append(v)
+		apariciones[v] = 0
+		valores = {}
+		for w in grafo.adyacentes(v):
+			valores[w] = (int)(grafo.obtener_arista(v,w)[2])
+			adyacentes[v] = valores
+	for _ in range(recorridos):
+		origen = random.choice(vertices)
+		apariciones[origen] += 1
+		for _ in range(largo):
+			actual = " ".join(random.choices(list(adyacentes[origen].keys()),list(adyacentes[origen].values())))
+			apariciones[actual] += 1
+			origen = actual
+	for k,v in apariciones.items():
+		if(contador < formato):
+			heap.encolar((v,k))
+			contador += 1
 			continue
-		if tam > minimos.ver_min()[0]:
-			minimos.desencolar()
-			minimos.encolar((tam,codigo))
+		if v > heap.ver_min()[0]:
+			heap.desencolar()
+			heap.encolar((v,k))
 	pila = Pila()
-	while not minimos.esta_vacio():
-		pila.apilar(minimos.desencolar()[1])
+	while not heap.esta_vacio():
+		pila.apilar(heap.desencolar()[1])
 	while not pila.esta_vacia():
 		print(pila.desapilar(), end = '')
 		if not pila.esta_vacia():
 			print(', ', end = '')
 	print()
 	return
+
 def pagerank(grafo,cantidad,iteraciones):
 	pagerank = {}
 	links = {}
