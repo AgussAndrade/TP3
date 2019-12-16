@@ -62,8 +62,8 @@ def camino_minimo(grafo,origen,i = None,destino = None):
 			if i != None:
 				peso = int(peso[i])
 			else: peso = 1
-			if distancia + peso < dist[w]:
-				dist[w] = distancia + peso
+			if dist[v] + peso < dist[w]:
+				dist[w] = dist[v] + peso
 				padres[w] = v
 				q.encolar([dist[w],w])
 	return padres,dist
@@ -72,8 +72,9 @@ def ordenar_vertices(grafo,distancia):
 	rta = []
 	for v in vertices:
 		if distancia[v] != float('inf') and distancia[v] != 0:
-				rta.append((v,distancia[v]))
-	return quicksort(rta)
+			rta.append((v,distancia[v]))
+	rta = merge_sort(rta)
+	return rta
 def grafo_centralidad(grafo,formato = None):
 	cent = {}
 	vertices = grafo.obtener_vertices()
@@ -82,9 +83,7 @@ def grafo_centralidad(grafo,formato = None):
 		padre,distancia = camino_minimo(grafo,v,formato)
 		cent_aux = {}
 		for w in vertices: cent_aux[w] = 0
-		
 		vertices_ordenados = ordenar_vertices(grafo,distancia)
-		print(f'todo = {vertices_ordenados}')
 		for w,d in vertices_ordenados:
 			cent_aux[padre[w]] += 1 + cent_aux[w]
 		for w in vertices:

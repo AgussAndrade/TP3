@@ -80,11 +80,10 @@ def camino_escalas(aeropuertos,vuelos,desde,hasta):
 	return
 
 def centralidad(vuelos,formato):
-	cent = grafo_centralidad(vuelos,2)
+	cent = grafo_centralidad(vuelos)
 	minimos = Heap()
 	contador = 0
 	for codigo,tam in cent.items():
-		print(f'codigo: {codigo} -- tam: {tam}')
 		if(contador < formato):
 			minimos.encolar((tam,codigo))
 			contador +=1
@@ -119,7 +118,7 @@ def centralidad_aprox(vuelos,formato):
 	while not pila.esta_vacia():
 		print(pila.desapilar(), end = '')
 		if not pila.esta_vacia():
-			print(',', end = '')
+			print(', ', end = '')
 	print()
 	return
 def pagerank(grafo,cantidad,iteraciones):
@@ -214,7 +213,6 @@ def vacaciones(aeropuertos,vuelos,desde,cantidad):
 			cant_visitados-=1
 	print(ERROR_RECORRER_MUNDO)
 	return
-					# recorrer_mundo_aprox(aeropuertos,vuelos,comandos_validos[0])
 
 # def recorrer_mundo(aeropuertos,vuelos,desde):
 # 	if not desde in aeropuertos:
@@ -250,32 +248,50 @@ def vacaciones(aeropuertos,vuelos,desde,cantidad):
 
 # 	print()
 # 	print(costo)
-def _recorrer_mundo(vuelos,desde,actual,rta,valor,visitados,cant_visitados):
+def _recorrer_mundo_aprox(vuelos,actual,rta,valor,visitados,cant_visitados):
 	if cant_visitados == len(vuelos):
 		return True
-	ady = vuelos.adyacentes(actual)
+	if len(rta) > 1000:
+		return False
+	padres,dist = camino_minimo(vuelos,actual,0)
 	tiempo_min = []
-	for v in ady:
-		tiempo_min.append((v,int(vuelos.ver_peso(actual,v)[0])))
+	for v,distancia in dist.items():
+		tiempo_min.append((v,distancia))
 	tiempo_ordenado = quicksort(tiempo_min)
 	for tupla in tiempo_ordenado:
 		v = tupla[0]
-		pertenece = v not in visitados
-		if v != desde:
+		if v not in visitados:
+			valor[0] += tupla[1]
+			w = padres[v]
+			aniadidos = []
+			while w != None:
+
+				if w != actual:
+					rta.append(w)
+					if w not in visitados:
+						cant_visitados +=1
+						visitados.add(w)
+						aniadidos.append(w)
+				w = padres[w]
+			visitados.add(v)
 			rta.append(v)
-			if pertenece:
-				visitados.add(v)
-				cant_visitados+=1
-			valor[0]+= int(vuelos.ver_peso(actual,v)[0])
-			if(_recorrer_mundo(vuelos,desde,v,rta,valor,visitados,cant_visitados)):
+			cant_visitados+=1
+			if(_recorrer_mundo_aprox(vuelos,v,rta,valor,visitados,cant_visitados)):
 				return True
-			rta.pop()
-			if pertenece:
-				visitados.remove(v)
-				cant_visitados-=1
-			valor[0]-=int(vuelos.ver_peso(actual,v)[0])
+			w = padres[v]
+			while w != None:
+				if w != actual:
+					rta.pop()
+					w = padres[w]
+				for t in aniadidos:
+					visitados.remove(t)
+					cant_visitados-=1
+			rta.pop(v)
+			visitados.remove(v)
+			cant_visitados-=1
+			valor[0]-=distancia
 	return False
-def recorrer_mundo(aeropuertos,vuelos,desde):
+def recorrer_mundo_aprox(aeropuertos,vuelos,desde):
 	if not desde in aeropuertos:
 		print(ERROR_RECORRER_MUNDO)
 		return
@@ -285,20 +301,22 @@ def recorrer_mundo(aeropuertos,vuelos,desde):
 	cant_visitados = 0
 	for codigos in aeropuertos[desde]:
 		codigo = codigos[1]
-		rta.append(codigo)
 		visitados.add(codigo)
-		cant_visitados+=1
-		if (_recorrer_mundo(vuelos,codigo,codigo,rta,valor,visitados,cant_visitados)):
-			largo_rta = len(rta)
-			for i in range(largo_rta - 1):
-				print(f'{rta[i]} -> ',end = '')
-			print(rta[largo_rta -1])
+		cant_visitados +=1
+		if (_recorrer_mundo_aprox(vuelos, codigo, rta, valor, visitados, cant_visitados)):
+			print(f'{codigo} -> ',end = '')
+			for i in range(len(rta)):
+				print(f'{rta[i]} ',end = '')
+				if i < len(rta) -1:
+					print('-> ',end = '')
+			print()
 			print(valor[0])
 			return
+
 		else:
-			rta.pop()
+			cant_visitados -=1
 			visitados.remove(codigos)
-			cant_visitados-=1
-	print(ERROR_RECORRER_MUNDO)
+
+	print('no se encontro un camino')
 	return
 

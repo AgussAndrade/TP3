@@ -121,7 +121,7 @@ def envolver_comandos(aeropuertos,vuelos):
 			continue
 		if valor == 6:
 			if(largo >= 1):
-				recorrer_mundo(aeropuertos,vuelos,comandos_validos[0])
+				recorrer_mundo(aeropuertos,vuelos,comandos_validos[0],[float('inf')])
 			else:
 				print(ERROR_RECORRER_MUNDO)
 
