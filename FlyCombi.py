@@ -80,9 +80,9 @@ def envolver_comandos(aeropuertos,vuelos):
 		elif valor== 2:
 			centralidad(vuelos,int(comandos_validos[0]))
 		elif valor==3:
-			centralidad_aprox(vuelos,comandos_validos[0],300,10)
+			centralidad_aprox(vuelos,comandos_validos[0],300,20)
 		elif valor ==4:
-			pagerank(vuelos,int(comandos_validos[0]),10)
+			pagerank(vuelos,int(comandos_validos[0]),5)
 		elif valor==5:
 			nueva_aerolinea(aeropuertos,vuelos,comandos_validos[0])
 		elif valor == 6:
