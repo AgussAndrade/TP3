@@ -58,6 +58,7 @@ def upheap(arr,inicio,act,final):
 	i = act
 	while i > inicio:
 		padre = obtener_padre(i)
+		if padre < inicio:return
 		if arr[i][0] < arr[padre][0]:
 			swap(arr,i,padre)
 			i = padre
@@ -106,7 +107,7 @@ class Heap:
 		if self.esta_vacio(): return None
 		elem = self.arr[0]
 		swap(self.arr,0,self.cant -1)
-		self.arr.pop(self.cantidad -1)
+		self.arr.pop(self.cant -1)
 		self.cant -=1
 		downheap(self.arr,0,0,self.cant)
 		return elem
