@@ -116,7 +116,7 @@ def centralidad_aprox(grafo,formato,largo,recorridos):
 			apariciones[actual] +=1
 			origen = actual
 	for k,v in apariciones.items():
-		if(contador < formato):
+		if contador < int(formato):
 			heap.encolar((v,k))
 			contador +=1
 			continue
@@ -127,7 +127,7 @@ def centralidad_aprox(grafo,formato,largo,recorridos):
 	while not heap.esta_vacio():
 		pila.apilar(heap.desencolar()[1])
 	while not pila.esta_vacia():
-		print(pila.desencolar(),end  = '')
+		print(pila.desapilar(),end  = '')
 		if not pila.esta_vacia():
 			print(', ',end = '')
 	print()
