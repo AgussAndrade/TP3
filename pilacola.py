@@ -12,7 +12,7 @@ class Cola:
 	def encolar(self,dato):
 		nuevo_nodo = _Nodo(dato)
 		if self.ultimo is not None:
-			self.utimo.prox = nuevo_nodo
+			self.ultimo.prox = nuevo_nodo
 			self.ultimo = nuevo_nodo
 		else:
 			self.prim = nuevo_nodo
@@ -40,9 +40,11 @@ class Pila:
 	def	desapilar(self):
 		dato = self.ult.dato
 		self.ult = self.ult.prox
+		return dato
 	def esta_vacia(self):
 		return self.ult == None
-
+	def ver_tope(self):
+		return self.ult.dato
 def obtener_padre(pos):
 	return (pos -1 )//2
 def ob_hijo_i(pos):
@@ -65,7 +67,7 @@ def upheap(arr,inicio,act,final):
 		else: return
 	return
 def downheap(arr,inicio,act,final):
-	if act< inicio or act >= final : return
+	if act< inicio or act >= final or inicio == final : return
 	i = act
 	while i < final:
 		hijo_d = ob_hijo_d(i)
@@ -80,17 +82,17 @@ def downheap(arr,inicio,act,final):
 				i = aux
 				continue
 			else: return
-		if hijo_d < final:
+		elif hijo_d < final:
 			if arr[hijo_d][0] < arr[i][0]:
 				swap(arr,i,hijo_d)
 				i = hijo_d
 				continue
-			return
 		elif hijo_i < final:
 			if arr[hijo_i][0] < arr[i][0]:
 				swap(arr,i,hijo_i)
 				i = hijo_i
 				continue
+			return
 		else: return
 	return
 class Heap:

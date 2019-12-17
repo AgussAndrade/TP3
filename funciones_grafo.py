@@ -77,7 +77,7 @@ def grafo_centralidad(grafo,formato = None):
 	for v in vertices:
 		padre,distancia = camino_minimo(grafo,v, formato)
 		cent_aux = {}
-		for w in vertices: camino_minimo(grafo,v,formato)
+		for w in vertices: cent_aux[w] = 0
 		vertices_ordenados = ordenar_vertices(grafo,distancia)
 		for w,d in vertices_ordenados:
 			cent_aux[padre[w]] += 1 + cent_aux[w]

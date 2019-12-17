@@ -23,7 +23,7 @@ def camino_mas(formato,aeropuertos,vuelos,desde,hasta):
 	codigos_validos = []
 	padres ={}
 	dist = {}
-	menos = float('inf')
+	menor = float('inf')
 	a_utilizar = ''
 	for datos_hasta in aeropuertos[hasta]:
 		codigos_validos.append(datos_hasta[1])
@@ -34,6 +34,7 @@ def camino_mas(formato,aeropuertos,vuelos,desde,hasta):
 				menor = dist_aux[aeropuerto_hasta]
 				dist = dist_aux
 				padres = padres_aux
+				a_utilizar = aeropuerto_hasta
 	pila = Pila()
 	while a_utilizar != None:
 		pila.apilar(a_utilizar)
@@ -51,7 +52,7 @@ def camino_escalas(aeropuertos,vuelos,desde,hasta):
 	codigos_validos = []
 	padres = {}
 	orden = {}
-	menos = float('inf')
+	menor = float('inf')
 	a_utilizar = ''
 	for datos_hasta in aeropuertos[hasta]:
 		codigos_validos.append(datos_hasta[1])
@@ -62,6 +63,7 @@ def camino_escalas(aeropuertos,vuelos,desde,hasta):
 				menor = dist_aux[aeropuerto_hasta]
 				dist = dist_aux
 				padres = padres_aux
+				a_utilizar = aeropuerto_hasta
 	pila = Pila()
 	while a_utilizar != None:
 		pila.apilar(a_utilizar)
@@ -73,7 +75,7 @@ def camino_escalas(aeropuertos,vuelos,desde,hasta):
 	print()
 	return
 def centralidad (vuelos,formato):
-	cent = grafo_centralidad(vuelos)
+	cent = grafo_centralidad(vuelos,2)
 	minimos = Heap()
 	contador = 0
 	for codigo,tam in cent.items():
@@ -92,6 +94,7 @@ def centralidad (vuelos,formato):
 			if not pila.esta_vacia():
 				print(', ',end = '')
 		print()
+		return
 def centralidad_aprox(grafo,formato,largo,recorridos):
 	heap = Heap()
 	apariciones = {}
@@ -167,10 +170,10 @@ def pagerank(grafo,cantidad,iteraciones):
 def nueva_aerolinea(aeropuertos,vuelos,archivo_a_escribir):
 	try:
 		with open(archivo_a_escribir,'w',encoding = 'utf8') as archivo:
-			arbol_a_escribir = mst_prim(vuelos,None,0)
+			arbol_a_escribir = mst_prim(vuelos,None,1)
 			visitados = set()
 			for v in arbol_a_escribir.obtener_vertices():
-				for w in arbol_a_escribir.adyacentes():
+				for w in arbol_a_escribir.adyacentes(v):
 					if not (v,w) in visitados and(w,v) not in visitados:
 						visitados.add((v,w))
 						arr_a_escribir = [v,w] + vuelos.ver_peso(v,w)
@@ -191,9 +194,11 @@ def _vacaciones(vuelos,desde,actual,rta,visitados,cant_visitados,cantidad):
 			cant_visitados +=1
 			if(_vacaciones(vuelos,desde,v,rta,visitados,cant_visitados,cantidad)):
 				return True
-			rta.pop()
-			visitados.remove(v)
-			cant_visitados -=1
+			else:
+				rta.pop()
+				visitados.remove(v)
+				cant_visitados -=1
+	return False
 def vacaciones(aeropuertos,vuelos,desde,cantidad):
 	if not desde in aeropuertos:
 		print(ERROR_VACACIONES)
@@ -209,8 +214,8 @@ def vacaciones(aeropuertos,vuelos,desde,cantidad):
 			largo_rta = len(rta)
 			for i in range(largo_rta):
 				print(f'{rta[i]} -> ',end = '')
-				print(rta[0])
-				return
+			print(rta[0])
+			return
 		else:
 			rta.pop()
 			visitados.remove(codigo)
