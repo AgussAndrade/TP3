@@ -86,15 +86,15 @@ def centralidad (vuelos,formato):
 		if tam > minimos.ver_min()[0]:
 			minimos.desencolar()
 			minimos.encolar((tam,codigo))
-		pila = Pila()
-		while not minimos.esta_vacio():
-			pila.apilar(minimos.desencolar()[1])
-		while not pila.esta_vacia():
-			print(pila.desapilar(),end = '')
-			if not pila.esta_vacia():
-				print(', ',end = '')
-		print()
-		return
+	pila = Pila()
+	while not minimos.esta_vacio():
+		pila.apilar(minimos.desencolar()[1])
+	while not pila.esta_vacia():
+		print(pila.desapilar(),end = '')
+		if not pila.esta_vacia():
+			print(', ',end = '')
+	print()
+	return
 def centralidad_aprox(grafo,formato,largo,recorridos):
 	heap = Heap()
 	apariciones = {}
@@ -116,7 +116,7 @@ def centralidad_aprox(grafo,formato,largo,recorridos):
 			apariciones[actual] +=1
 			origen = actual
 	for k,v in apariciones.items():
-		if contador < int(formato):
+		if(contador < formato):
 			heap.encolar((v,k))
 			contador +=1
 			continue
@@ -273,7 +273,7 @@ def recorrer_mundo_aprox(aeropuertos,vuelos,desde):
 		return
 	rta = []
 	valor = [0]
-	visitado = set()
+	visitados = set()
 	cant_visitados = 0
 	for codigos in aeropuertos[desde]:
 		codigo = codigos[1]

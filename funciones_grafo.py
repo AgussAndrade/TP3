@@ -57,6 +57,7 @@ def camino_minimo(grafo,origen,i = None,destino = None):
 			peso = grafo.ver_peso(v,w)
 			if i != None:
 				peso = int(peso[i])
+			else: peso = 1
 			if dist[v] + peso < dist[w]:
 				dist[w] = dist[v] + peso
 				padres[w] = v
@@ -67,15 +68,22 @@ def ordenar_vertices(grafo,distancia):
 	vertices = grafo.obtener_vertices()
 	rta = []
 	for v in vertices:
-		if distancia[v] != float('inf') and distancia[v] != 0:
+		if distancia[v] != 0:
 			rta.append((v,distancia[v]))
-	return merge_sort(rta)
+	rta_2 = quicksort(rta)
+	i = 0
+	j = len(rta) -1
+	while i < len(rta):
+		rta[i] = rta_2[j]
+		j-=1
+		i+=1
+	return rta_2
 def grafo_centralidad(grafo,formato = None):
 	cent = {}
 	vertices = grafo.obtener_vertices()
 	for v in vertices: cent[v] = 0
 	for v in vertices:
-		padre,distancia = camino_minimo(grafo,v, formato)
+		padre,distancia = camino_minimo(grafo,v,formato)
 		cent_aux = {}
 		for w in vertices: cent_aux[w] = 0
 		vertices_ordenados = ordenar_vertices(grafo,distancia)

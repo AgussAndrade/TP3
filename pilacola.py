@@ -125,17 +125,17 @@ def quicksort(lista):
 	return quicksort(i) + [m] + quicksort(d)
 def partir(lista,fin):
 	pivote = lista[0]
-	i = []
+	izq = []
 	d = []
 	i =1
 	while i <= fin:
 		if lista[i][1] < pivote[1]:
-			i.append(lista[i])
+			izq.append(lista[i])
 			i +=1
 		else:
 			d.append(lista[i])
 			i +=1
-	return i,pivote,d
+	return izq,pivote,d
 def merge_sort(lista):
 	if len(lista) <2:
 		return lista
@@ -148,12 +148,15 @@ def merge(l1,l2):
 	i,j=0,0
 	resultado =[]
 	while(i<len(l1)and j<len(l2)):
-		if(l1[i][1] > l2[i][1]):
+		if(l1[i][1] < l2[i][1]):
 			resultado.append(l1[i])
 			i+=1
 		else:
 			resultado.append(l2[i])
 			j+=1
 	resultado += l1[i:]
-	resultado+= l2[j:]
+	resultado += l2[j:]
 	return resultado
+a = [('a',0),('b',32),('r',54),('f',21),('t',5)]
+print(f'merge {merge_sort(a)}')
+print(f'quick {quicksort(a)}')
