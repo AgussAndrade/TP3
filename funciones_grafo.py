@@ -78,12 +78,36 @@ def ordenar_vertices(grafo,distancia):
 		j-=1
 		i+=1
 	return rta
+def camino_minimo_centralidad(grafo,origen,i = None,destino = None):
+	dist = {}
+	padres = {}
+	for v in grafo.obtener_vertices():
+		dist[v] = float('inf')
+	dist[origen] = 0
+	padres[origen] = None
+	q = Heap()
+	q.encolar([dist[origen],origen])
+	while not q.esta_vacio():
+		distancia,v = q.desencolar()
+		if destino is not None:
+			if destino == v:
+				return padres,dist
+		for w in grafo.adyacentes(v):
+			peso = grafo.ver_peso(v,w)
+			if i != None:
+				peso = int(peso[i])
+			else: peso = 1
+			if dist[v] + 1/peso < dist[w]:
+				dist[w] = dist[v] + 1/peso
+				padres[w] = v
+				q.encolar([dist[w],w])
+	return padres,dist
 def grafo_centralidad(grafo,formato = None):
 	cent = {}
 	vertices = grafo.obtener_vertices()
 	for v in vertices: cent[v] = 0
 	for v in vertices:
-		padre,distancia = camino_minimo(grafo,v,formato)
+		padre,distancia = camino_minimo_centralidad(grafo,v,formato)
 		cent_aux = {}
 		for w in vertices: cent_aux[w] = 0
 		vertices_ordenados = ordenar_vertices(grafo,distancia)

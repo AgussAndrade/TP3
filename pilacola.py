@@ -157,6 +157,3 @@ def merge(l1,l2):
 	resultado += l1[i:]
 	resultado += l2[j:]
 	return resultado
-a = [('a',0),('b',32),('r',54),('f',21),('t',5)]
-print(f'merge {merge_sort(a)}')
-print(f'quick {quicksort(a)}')
