@@ -84,13 +84,11 @@ def grafo_centralidad(grafo,formato = None):
 	for v in vertices: cent[v] = 0
 	for v in vertices:
 		padre,distancia = camino_minimo(grafo,v,formato)
-		print(f'{distancia.items()}')
 		cent_aux = {}
 		for w in vertices: cent_aux[w] = 0
 		vertices_ordenados = ordenar_vertices(grafo,distancia)
 		for w,d in vertices_ordenados:
 			cent_aux[padre[w]] += 1 + cent_aux[w]
-		print(f'{vertices_ordenados}')
 		for w in vertices:
 			if w == v: continue
 			cent[w] += cent_aux[w]

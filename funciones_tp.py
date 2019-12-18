@@ -294,12 +294,12 @@ def recorrer_mundo_aprox(aeropuertos,vuelos,desde):
 			visitados.remove(codigo)
 	print('no se encontro camino')
 	return
-def _recorrer_mundo(vuelos,actual,rta_actual,valor_actual,visitados,cant_visitados,valor_mejor,rta_mejor):
+def _recorrer_mundo(vuelos,actual,rta_actual,valor_actual,visitados,cant_visitados,valor_mejor,heap):
 	if valor_actual[0] > valor_mejor[0] or len(rta_actual) >1000:
 		return
 	if len(vuelos) == cant_visitados and valor_actual[0] < valor_mejor[0]:
-		rta_mejor = rta_actual[:]
-		valor_mejor = valor_actual[:]
+		valor_mejor[0] = valor_actual[0]
+		heap.encolar((valor_actual[0],rta_actual[:]))
 		return
 	for v in vuelos.adyacentes(actual):
 		pertenece = v not in visitados
@@ -308,7 +308,7 @@ def _recorrer_mundo(vuelos,actual,rta_actual,valor_actual,visitados,cant_visitad
 		if v not in visitados:
 			visitados.add(v)
 			cant_visitados+=1
-		_recorrer_mundo(vuelos,v,rta_actual,valor_actual,visitados,cant_visitados,valor_mejor,rta_mejor)
+		_recorrer_mundo(vuelos,v,rta_actual,valor_actual,visitados,cant_visitados,valor_mejor,heap)
 		if pertenece:
 			visitados.remove(v)
 			cant_visitados-=1
@@ -338,13 +338,16 @@ def recorrer_mundo(aeropuertos,vuelos,desde):
 	rta = []
 	valor_actual = [0]
 	cant_visitados = 0
+	heap = Heap()
+	heap.encolar((valor_mejor[0],rta_mejor))
 	for codigos in aeropuertos[desde]:
 		codigo = codigos[1]
 		visitados.add(codigo)
 		cant_visitados+=1
-		_recorrer_mundo(vuelos,codigo,rta,valor_actual,visitados,cant_visitados,valor_mejor,rta_mejor)
+		_recorrer_mundo(vuelos,codigo,rta,valor_actual,visitados,cant_visitados,valor_mejor,heap)
 		visitados.remove(codigo)
 		cant_visitados-=1
+	valor_mejor,rta_mejor = heap.desencolar()
 	print(f'{codigo} -> ',end='')
 	largo = len(rta_mejor)
 	for i in range(largo):
@@ -352,5 +355,5 @@ def recorrer_mundo(aeropuertos,vuelos,desde):
 		if i < largo -1:
 			print('-> ',end = '')
 	print()
-	print(valor_mejor[0])
+	print(valor_mejor)
 	return
